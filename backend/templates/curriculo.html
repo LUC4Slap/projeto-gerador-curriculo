@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo - {{ dados.nome }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        .container { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        .experiencia { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ dados.nome }}</h1>
+        <p><strong>Telefone:</strong> {{ dados.telefone }}</p>
+        <p><strong>Email:</strong> {{ dados.email }}</p>
+        <p><strong>Estado Civil:</strong> {{ dados.estado_sivil }}</p>
+
+        <h2>Objetivo</h2>
+        <p>{{ dados.obejetivo }}</p>
+
+        <h2>Meta</h2>
+        <p>{{ dados.meta }}</p>
+
+        <h2>Competências</h2>
+        <ul>
+            {% for competencia in dados.competencias %}
+                <li>{{ competencia }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Experiência Profissional</h2>
+        {% for experiencia in dados.experiencias %}
+            <div class="experiencia">
+                <h3>{{ experiencia.cargo }} - {{ experiencia.nome_empresa }}</h3>
+                <p><strong>Período:</strong> {{ experiencia.data_inicio }} -
+                    {% if experiencia.atual %}
+                        Atual
+                    {% else %}
+                        {{ experiencia.data_saida }}
+                    {% endif %}
+                </p>
+                <p><strong>Atribuições:</strong> {{ experiencia.atribuicoes }}</p>
+                <p><strong>Competências na vaga:</strong></p>
+                <ul>
+                    {% for comp in experiencia.competencias_vaga %}
+                        <li>{{ comp }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
