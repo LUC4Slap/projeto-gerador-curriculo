@@ -24,7 +24,7 @@ out/
 .output/
 
 # IDE & Editors
-.idea/
+backend/.idea/
 .vscode/
 *.swp
 *.swo
