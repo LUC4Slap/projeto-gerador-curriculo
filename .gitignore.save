@@ -1,0 +1,123 @@
+# Dependencies
+/frontEnd/node_modules/
+.pnp/
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+package-lock.json
+yarn.lock
+
+# Testing
+coverage/
+.nyc_output/
+test-report/
+
+# Production Build
+build/
+dist/
+out/
+.next/
+.nuxt/
+.output/
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.vs/
+*.sublime-workspace
+*.sublime-project
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Logs & Debug
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+debug.log
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backend specific
+*.pyc
+backend/__pycache__/
+.pytest_cache/
+.coverage
+/backend/.venv/*
+/backend/venv/*
+backend/.venv/
+backend/venv/
+
+Tente ajustar seu `.gitignore` para garantir que os diretórios do ambiente virtual sejam corretamente ignorados. Algumas mudanças que podem ajudar:
+
+1. **Caminhos Absolutos:** Como você está definindo os diretórios do backend dentro da pasta `backend/`, certifique-se de que o caminho está correto no `.gitignore`. O ajuste correto seria:
+
+   ```gitignore
+   backend/venv/
+   backend/.venv/
+   ```
+
+2. **Ajuste para Cobrir Qualquer Posição:** Às vezes, o `.gitignore` pode não funcionar se houver arquivos já rastreados pelo Git. Tente remover os itens do controle de versão antes de confirmar que estão sendo ignorados:
+
+   ```sh
+   git rm -r --cached backend/venv
+   git rm -r --cached backend/.venv
+   ```
+
+   Depois, faça um commit com as mudanças:
+
+   ```sh
+   git commit -m "Removendo arquivos ignorados"
+   ```
+
+3. **Verifique se o `.gitignore` está sendo seguido corretamente:**  
+   Use o comando abaixo para testar se um arquivo específico está sendo ignorado:
+
+   ```sh
+   git check-ignore -v backend/venv/somefile
+   ```
+
+   Se ele não for ignorado, pode ser necessário verificar se há regras conflitantes no `.gitignore`.
+
+Após essas alterações, tente novamente adicionar seus arquivos e verifique se o ambiente virtual está sendo ignorado corretamente.
+*.pyo
+*.pyd
+.Python
+.tox/
+.eggs/
+*.egg-info/
+celerybeat-schedule
+backend/.idea/*
+
+# Frontend specific
+.cache/
+.temp/
+.tmp/
+*.tsbuildinfo
+stats.json
+storybook-static/
+.eslintcache
+
+# Misc
+.vercel
+*.pem
+.docker/
+temp/
+tmp/

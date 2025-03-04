@@ -23,158 +23,159 @@ const ExperienciaModal = ({ isOpen, onClose, onAdd }) => {
       data_inicio: '',
       data_saida: '',
       atual: false,
-      competencias_vaga: '',
-      atribuicoes: [],
-      novaAtribuicao: '',
+      competencias_vaga: [],
+      atribuicoes: '',
+      novaCompetencia: '',
       cargo: '',
     },
     validationSchema,
     onSubmit: (values) => {
-      onAdd({
-        ...values,
-        competencias_vaga: values.competencias_vaga
-          .split(',')
-          .map((s) => s.trim()),
-      });
+      onAdd(values);
       onClose();
       formik.resetForm();
     },
   });
 
-  // Adiciona uma atribuição ao array
-  const addAtribuicao = () => {
-    if (formik.values.novaAtribuicao.trim() !== '') {
-      formik.setFieldValue('atribuicoes', [
-        ...formik.values.atribuicoes,
-        formik.values.novaAtribuicao,
+  // Adiciona uma competência ao array
+  const addCompetencia = () => {
+    if (formik.values.novaCompetencia.trim() !== '') {
+      formik.setFieldValue('competencias_vaga', [
+        ...formik.values.competencias_vaga,
+        formik.values.novaCompetencia,
       ]);
-      formik.setFieldValue('novaAtribuicao', '');
+      formik.setFieldValue('novaCompetencia', '');
     }
   };
 
-  // Remove uma atribuição específica
-  const removeAtribuicao = (index: any) => {
-    const newAtribuicoes = formik.values.atribuicoes.filter(
+  // Remove uma competência específica
+  const removeCompetencia = (index: any) => {
+    const newCompetencias = formik.values.competencias_vaga.filter(
       (_, i) => i !== index
     );
-    formik.setFieldValue('atribuicoes', newAtribuicoes);
+    formik.setFieldValue('competencias_vaga', newCompetencias);
   };
 
-  if(!isOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Adicionar Experiência</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-3">
-          {/* Nome da empresa */}
-          <input
-            type="text"
-            name="nome_empresa"
-            placeholder="Nome da Empresa"
-            {...formik.getFieldProps('nome_empresa')}
-            className="w-full p-2 border rounded"
-          />
-          {formik.touched.nome_empresa && formik.errors.nome_empresa && (
-            <p className="text-red-500 text-sm">{formik.errors.nome_empresa}</p>
-          )}
-
-          {/* Data de início */}
-          <input
-            type="text"
-            name="data_inicio"
-            placeholder="Data Início (dd/mm/yyyy)"
-            {...formik.getFieldProps('data_inicio')}
-            className="w-full p-2 border rounded"
-          />
-          {formik.touched.data_inicio && formik.errors.data_inicio && (
-            <p className="text-red-500 text-sm">{formik.errors.data_inicio}</p>
-          )}
-
-          {/* Data de saída */}
-          <input
-            type="text"
-            name="data_saida"
-            placeholder="Data Saída (dd/mm/yyyy)"
-            {...formik.getFieldProps('data_saida')}
-            className="w-full p-2 border rounded"
-            disabled={formik.values.atual} // Desativa se for emprego atual
-          />
-          {formik.touched.data_saida && formik.errors.data_saida && (
-            <p className="text-red-500 text-sm">{formik.errors.data_saida}</p>
-          )}
-
-          {/* Emprego atual */}
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-2 gap-4">
+            {/* Nome da empresa */}
             <input
-              type="checkbox"
-              name="atual"
-              checked={formik.values.atual}
-              onChange={(e) => {
-                formik.setFieldValue('atual', e.target.checked);
-                if (e.target.checked) {
-                  formik.setFieldValue('data_saida', ''); // Limpa data de saída
-                }
-              }}
+              type="text"
+              name="nome_empresa"
+              placeholder="Nome da Empresa"
+              {...formik.getFieldProps('nome_empresa')}
+              className="w-full p-2 border rounded text-black col-span-2"
             />
-            <label>Emprego Atual</label>
-          </div>
+            {formik.touched.nome_empresa && formik.errors.nome_empresa && (
+              <p className="text-red-500 text-sm">
+                {formik.errors.nome_empresa}
+              </p>
+            )}
 
-          {/* Cargo */}
-          <input
-            type="text"
-            name="cargo"
-            placeholder="Cargo"
-            {...formik.getFieldProps('cargo')}
-            className="w-full p-2 border rounded"
-          />
-          {formik.touched.cargo && formik.errors.cargo && (
-            <p className="text-red-500 text-sm">{formik.errors.cargo}</p>
-          )}
+            {/* Data de início */}
+            <input
+              type="date"
+              name="data_inicio"
+              placeholder="Data Início"
+              {...formik.getFieldProps('data_inicio')}
+              className="w-full p-2 border rounded"
+            />
+            {formik.touched.data_inicio && formik.errors.data_inicio && (
+              <p className="text-red-500 text-sm">
+                {formik.errors.data_inicio}
+              </p>
+            )}
 
-          {/* Competências */}
-          <input
-            type="text"
-            name="competencias_vaga"
-            placeholder="Competências (separadas por vírgula)"
-            {...formik.getFieldProps('competencias_vaga')}
-            className="w-full p-2 border rounded"
-          />
+            {/* Data de saída */}
+            <input
+              type="date"
+              name="data_saida"
+              placeholder="Data Saída"
+              {...formik.getFieldProps('data_saida')}
+              className="w-full p-2 border rounded"
+              disabled={formik.values.atual} // Desativa se for emprego atual
+            />
+            {formik.touched.data_saida && formik.errors.data_saida && (
+              <p className="text-red-500 text-sm">{formik.errors.data_saida}</p>
+            )}
 
-          {/* Atribuições */}
-          <div>
-            <label className="block text-sm font-medium">Atribuições:</label>
-            <div className="flex gap-2">
+            {/* Emprego atual */}
+            <div className="flex items-center gap-2 col-span-2">
               <input
-                type="text"
-                name="novaAtribuicao"
-                placeholder="Digite uma atribuição"
-                value={formik.values.novaAtribuicao}
-                onChange={formik.handleChange}
-                className="w-full p-2 border rounded"
+                type="checkbox"
+                name="atual"
+                checked={formik.values.atual}
+                onChange={(e) => {
+                  formik.setFieldValue('atual', e.target.checked);
+                  if (e.target.checked) {
+                    formik.setFieldValue('data_saida', ''); // Limpa data de saída
+                  }
+                }}
               />
-              <button
-                type="button"
-                onClick={addAtribuicao}
-                className="bg-green-500 text-white p-2 rounded">
-                +
-              </button>
+              <label>Emprego Atual</label>
             </div>
-            <ul className="mt-2">
-              {formik.values.atribuicoes.map((atr, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center p-1 border-b">
-                  {atr}
-                  <button
-                    type="button"
-                    onClick={() => removeAtribuicao(index)}
-                    className="text-red-500 text-sm">
-                    ❌
-                  </button>
-                </li>
-              ))}
-            </ul>
+
+            {/* Cargo */}
+            <input
+              type="text"
+              name="cargo"
+              placeholder="Cargo"
+              {...formik.getFieldProps('cargo')}
+              className="w-full p-2 border rounded text-black"
+            />
+            {formik.touched.cargo && formik.errors.cargo && (
+              <p className="text-red-500 text-sm">{formik.errors.cargo}</p>
+            )}
+
+            {/* Atribuições */}
+            <input
+              type="text"
+              name="atribuicoes"
+              placeholder="Atribuições"
+              {...formik.getFieldProps('atribuicoes')}
+              className="w-full p-2 border rounded text-black"
+            />
+
+            {/* Competências */}
+            <div className="col-span-2">
+              <label className="block text-sm font-medium">Competências:</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  name="novaCompetencia"
+                  placeholder="Digite uma competência"
+                  value={formik.values.novaCompetencia}
+                  onChange={formik.handleChange}
+                  className="w-full p-2 border rounded text-black"
+                />
+                <button
+                  type="button"
+                  onClick={addCompetencia}
+                  className="bg-green-500 text-white p-2 rounded text-black">
+                  +
+                </button>
+              </div>
+              <ul className="mt-2">
+                {formik.values.competencias_vaga.map((comp, index) => (
+                  <li
+                    key={index}
+                    className="flex justify-between items-center p-1 border-b text-black">
+                    {comp}
+                    <button
+                      type="button"
+                      onClick={() => removeCompetencia(index)}
+                      className="text-red-500 text-sm">
+                      ❌
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Botões */}
