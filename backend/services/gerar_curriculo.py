@@ -1,8 +1,10 @@
+import os
 import pdfkit
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
 
-
+# Define o caminho do wkhtmltopdf dentro da pasta "htmlToPdfBin"
+caminho_wkhtmltopdf = os.path.join("htmlToPdfBin", "wkhtmltopdf")
 def formatar_data_pt_br(data_str):
     try:
         data_obj = datetime.strptime(data_str, "%Y-%m-%d")
@@ -30,7 +32,6 @@ def gerar_curriculo(dados):
     env.filters['formatar_telefone_br'] = formatar_telefone_br
     template = env.get_template("curriculo.html")
     html = template.render(dados=dados)
-    caminho_wkhtmltopdf = "/home/lucas/.asdf/shims/wkhtmltopdf"  # Atualize com o resultado do "which wkhtmltopdf"
     config = pdfkit.configuration(wkhtmltopdf=caminho_wkhtmltopdf)
 
     pdf_path = "/tmp/curriculo.pdf"  # Pasta temporária no Linux
